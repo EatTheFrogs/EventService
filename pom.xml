@@ -9,13 +9,13 @@
 	</parent>
 	<groupId>com.eatthefrog</groupId>
 	<artifactId>EventService</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>EventService</name>
 	<scm>
 		<connection>scm:git:${project.scm.url}</connection>
 		<developerConnection>scm:git:${project.scm.url}</developerConnection>
 		<url>https://github.com/EatTheFrogs/EventService.git</url>
-		<tag>v0.0.1</tag>
+		<tag>HEAD</tag>
 	</scm>
 	<properties>
 		<java.version>17</java.version>
