@@ -45,6 +45,10 @@ public class EventService {
         eventRepo.deleteByGoalId(goalId);
     }
 
+    public void deleteAllEventsForUser(String userUuid) {
+        eventRepo.deleteByUserUuid(userUuid);
+    }
+
     @Transactional(rollbackFor=Exception.class)
     private void createEventTransactional(Event event) {
         try {

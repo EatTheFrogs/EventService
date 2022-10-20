@@ -34,6 +34,13 @@ public class EventsController {
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_api')")
+    @DeleteMapping("/delete/user/{userUuid}")
+    public ResponseEntity deleteAllEventsForUser(@PathVariable String userUuid) {
+        eventService.deleteAllEventsForUser(userUuid);
+        return ResponseEntity.ok().build();
+    }
+
     // External endpoints
 
     @PreAuthorize("#userUuid == authentication.token.claims['uid']")
