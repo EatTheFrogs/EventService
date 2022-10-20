@@ -16,9 +16,6 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class EventsController {
 
-    @Value("${EAT.THE.FROG.OKTA.BACKEND.SCOPE}")
-    private String scope;
-
     private final EventService eventService;
 
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
@@ -30,7 +27,7 @@ public class EventsController {
 
     // Internal endpoints
 
-    @PreAuthorize("hasAuthority('SCOPE_'+#scope)")
+    @PreAuthorize("hasAuthority('SCOPE_api')")
     @DeleteMapping("/delete/goal/{goalId}")
     public ResponseEntity deleteEventsForGoal(@PathVariable String goalId) {
         eventService.deleteEventsForGoalId(goalId);
