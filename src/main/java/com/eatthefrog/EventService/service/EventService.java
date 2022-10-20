@@ -5,6 +5,8 @@ import com.eatthefrog.EventService.model.Event;
 import com.eatthefrog.EventService.model.Goal;
 import com.eatthefrog.EventService.repository.EventRepo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +14,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 
+@Log
 @Service
 @RequiredArgsConstructor
 public class EventService {
@@ -44,14 +47,24 @@ public class EventService {
 
     @Transactional(rollbackFor=Exception.class)
     private void createEventTransactional(Event event) {
-        event.setCompletedDate(ZonedDateTime.now(ZoneId.of("UTC")));
-        Event savedEvent = eventRepo.save(event);
-        goalServiceClient.addEventToGoal(savedEvent);
+        try {
+            event.setCompletedDate(ZonedDateTime.now(ZoneId.of("UTC")));
+            Event savedEvent = eventRepo.save(event);
+            goalServiceClient.addEventToGoal(savedEvent);
+        } catch(Exception e) {
+            log.severe(ExceptionUtils.getStackTrace(e));
+            throw e;
+        }
     }
 
     @Transactional(rollbackFor=Exception.class)
     public void deleteEventTransactional(Event event) {
-        goalServiceClient.deleteEventFromGoal(event);
-        eventRepo.delete(event);
+        try {
+            goalServiceClient.deleteEventFromGoal(event.getGoalId(), event.getId());
+            eventRepo.delete(event);
+        } catch(Exception e) {
+            log.severe(ExceptionUtils.getStackTrace(e));
+            throw e;
+        }
     }
 }
