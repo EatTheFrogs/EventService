@@ -14,4 +14,6 @@ public interface EventRepo extends MongoRepository<Event, String> {
     public Collection<Event> findAllByUserUuidOrderByCompletedDateDesc(String userUuid);
 
     public void deleteByGoalId(String goalId);
+
+    public void deleteByUserUuid(String userUuid);
 }

@@ -46,7 +46,7 @@ public class GoalServiceClient {
     }
 
     public void deleteEventFromGoal(String goalId, String eventId) {
-        goalServiceWebClient.post()
+        goalServiceWebClient.delete()
                 .uri(uriBuilder -> uriBuilder.path(DELETE_PATH)
                         .build(goalId, eventId))
                 .retrieve()
