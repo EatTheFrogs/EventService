@@ -18,7 +18,7 @@ public class GoalServiceClient {
 
     private static final String GET_PATH = "/{goalId}";
     private static final String CREATE_PATH = "/create/event";
-    private static final String DELETE_PATH = "/delete/event";
+    private static final String DELETE_PATH = "/{goalId}/delete/event/{eventId}";
 
     private final WebClient goalServiceWebClient;
 
@@ -45,11 +45,10 @@ public class GoalServiceClient {
                 .block();
     }
 
-    public void deleteEventFromGoal(Event event) {
+    public void deleteEventFromGoal(String goalId, String eventId) {
         goalServiceWebClient.post()
                 .uri(uriBuilder -> uriBuilder.path(DELETE_PATH)
-                        .build())
-                .body(Mono.just(event), Event.class)
+                        .build(goalId, eventId))
                 .retrieve()
                 .onStatus(
                         HttpStatus::isError,
