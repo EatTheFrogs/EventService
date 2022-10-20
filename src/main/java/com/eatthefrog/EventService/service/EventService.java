@@ -42,14 +42,14 @@ public class EventService {
         eventRepo.deleteByGoalId(goalId);
     }
 
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     private void createEventTransactional(Event event) {
         event.setCompletedDate(ZonedDateTime.now(ZoneId.of("UTC")));
         Event savedEvent = eventRepo.save(event);
         goalServiceClient.addEventToGoal(savedEvent);
     }
 
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     public void deleteEventTransactional(Event event) {
         goalServiceClient.deleteEventFromGoal(event);
         eventRepo.delete(event);
