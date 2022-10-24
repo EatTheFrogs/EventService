@@ -4,7 +4,6 @@ import com.eatthefrog.EventService.model.Event;
 import com.eatthefrog.EventService.model.Goal;
 import com.eatthefrog.EventService.service.EventService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -51,7 +50,7 @@ public class EventsController {
 
     @PreAuthorize("#event.getUserUuid() == authentication.token.claims['uid']")
     @PostMapping("/create")
-    public Collection<Goal> createEvent(@RequestBody Event event) {
+    public Collection<Goal> createEvent(@RequestBody Event event) throws Exception {
         return eventService.createEvent(event);
     }
 
@@ -63,7 +62,7 @@ public class EventsController {
 
     @PreAuthorize("#event.getUserUuid() == authentication.token.claims['uid']")
     @DeleteMapping("/delete")
-    public Collection<Goal> deleteEvent(@RequestBody Event event) {
+    public Collection<Goal> deleteEvent(@RequestBody Event event) throws Exception {
         return eventService.deleteEvent(event);
     }
 }
