@@ -19,7 +19,7 @@ import java.time.ZonedDateTime;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", include=JsonTypeInfo.As.EXISTING_PROPERTY, visible = true)
 @JsonSubTypes( {@JsonSubTypes.Type(value = DefaultEvent.class, name = "default"), @JsonSubTypes.Type(value = LiftEvent.class, name = "lift")} )
 @Document(collection = "events")
-public class Event extends BaseModel {
+public abstract class Event extends BaseModel {
 
     @Serial
     private static final long serialVersionUID = -3721461690283380472L;
