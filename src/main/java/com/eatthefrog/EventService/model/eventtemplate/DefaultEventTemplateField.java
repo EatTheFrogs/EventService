@@ -1,11 +1,12 @@
-package com.eatthefrog.EventService.model;
+package com.eatthefrog.EventService.model.eventtemplate;
 
+import com.eatthefrog.EventService.model.BaseModel;
 import lombok.Data;
 
 import java.io.Serial;
 
 @Data
-public class EventTemplateField extends BaseModel {
+public class DefaultEventTemplateField extends BaseModel {
 
     @Serial
     private static final long serialVersionUID = 4950041889292890771L;

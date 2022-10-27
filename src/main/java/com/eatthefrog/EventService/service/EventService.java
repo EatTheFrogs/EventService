@@ -1,8 +1,8 @@
 package com.eatthefrog.EventService.service;
 
 import com.eatthefrog.EventService.client.GoalServiceClient;
-import com.eatthefrog.EventService.model.Event;
-import com.eatthefrog.EventService.model.Goal;
+import com.eatthefrog.EventService.model.event.Event;
+import com.eatthefrog.EventService.model.goal.Goal;
 import com.eatthefrog.EventService.repository.EventRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
