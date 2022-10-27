@@ -1,6 +1,6 @@
 package com.eatthefrog.EventService.repository;
 
-import com.eatthefrog.EventService.model.Event;
+import com.eatthefrog.EventService.model.event.Event;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Collection;

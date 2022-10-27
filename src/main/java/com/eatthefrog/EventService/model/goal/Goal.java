@@ -1,10 +1,12 @@
-package com.eatthefrog.EventService.model;
+package com.eatthefrog.EventService.model.goal;
 
+import com.eatthefrog.EventService.model.BaseModel;
+import com.eatthefrog.EventService.model.event.Event;
+import com.eatthefrog.EventService.model.eventtemplate.EventTemplate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
@@ -16,6 +18,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Document(collection = "goals")
 public class Goal extends BaseModel {
 
     @Serial

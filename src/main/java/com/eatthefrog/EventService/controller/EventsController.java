@@ -1,7 +1,7 @@
 package com.eatthefrog.EventService.controller;
 
-import com.eatthefrog.EventService.model.Event;
-import com.eatthefrog.EventService.model.Goal;
+import com.eatthefrog.EventService.model.event.Event;
+import com.eatthefrog.EventService.model.goal.Goal;
 import com.eatthefrog.EventService.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,5 +1,8 @@
-package com.eatthefrog.EventService.model;
+package com.eatthefrog.EventService.model.event;
 
+import com.eatthefrog.EventService.model.BaseModel;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +16,8 @@ import java.time.ZonedDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", include=JsonTypeInfo.As.EXISTING_PROPERTY, visible = true)
+@JsonSubTypes( {@JsonSubTypes.Type(value = DefaultEvent.class, name = "default"), @JsonSubTypes.Type(value = LiftEvent.class, name = "lift")} )
 @Document(collection = "events")
 public class Event extends BaseModel {
 
@@ -21,6 +26,7 @@ public class Event extends BaseModel {
 
     @Id
     private String id;
+    private String type;
     private ZonedDateTime completedDate;
     @NotNull
     private String userUuid;
