@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -16,6 +18,13 @@ import java.util.Collection;
 public class EventsController {
 
     private final EventService eventService;
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public static class ResourceNotFoundException extends RuntimeException {
+        public ResourceNotFoundException(String message) {
+            super(message);
+        }
+    }
 
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public static class OperationFailedException extends RuntimeException {
@@ -60,9 +69,9 @@ public class EventsController {
         return eventService.updateEvent(event);
     }
 
-    @PreAuthorize("#event.getUserUuid() == authentication.token.claims['uid']")
-    @DeleteMapping("/delete")
-    public Collection<Goal> deleteEvent(@RequestBody Event event) throws Exception {
-        return eventService.deleteEvent(event);
+    @PreAuthorize("@eventService.assertUserOwnsEvent(#jwt.getClaim('uid').toString(), #eventId)")
+    @DeleteMapping("/delete/{eventId}")
+    public Collection<Goal> deleteEvent(@AuthenticationPrincipal Jwt jwt, @PathVariable String eventId) throws Exception {
+        return eventService.deleteEvent(eventId, jwt.getClaim("uid").toString());
     }
 }
