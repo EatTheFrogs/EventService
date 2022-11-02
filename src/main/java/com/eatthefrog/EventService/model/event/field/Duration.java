@@ -1,5 +1,6 @@
 package com.eatthefrog.EventService.model.event.field;
 
+import com.eatthefrog.EventService.model.BaseModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,14 +11,13 @@ import java.io.Serial;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TypeAlias("event.field.default")
-public class DefaultEventField extends EventField {
+@TypeAlias("event.field.duration")
+public class Duration extends BaseModel {
 
     @Serial
-    private static final long serialVersionUID = -6890295343670089002L;
+    private static final long serialVersionUID = 2464079261707018599L;
 
-    private String type;
-    private String unit;
-    private String value;
-    private Duration duration;
+    private int hours;
+    private int minutes;
+    private int seconds;
 }
