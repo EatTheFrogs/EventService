@@ -22,17 +22,17 @@ public class DefaultEventTemplate extends EventTemplate {
     @Serial
     private static final long serialVersionUID = -8880429014095596424L;
 
-    private Collection<EventTemplateField> fields = new ArrayList<EventTemplateField>();
+    private Collection<DefaultEventTemplateField> fields = new ArrayList<DefaultEventTemplateField>();
 
     @Override
-    public Collection<EventTemplateField> getFields() {
+    public Collection<DefaultEventTemplateField> getFields() {
         return fields;
     }
 
     @Override
     public void setFields(Collection<EventTemplateField> fields) {
         this.fields = fields.stream()
-                .map(EventTemplateField.class::cast)
+                .map(DefaultEventTemplateField.class::cast)
                 .toList();
     }
 }
