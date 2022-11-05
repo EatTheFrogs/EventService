@@ -47,6 +47,7 @@ public class EventService {
 
     public Collection<Goal> updateEvent(Event event) {
         getEventById(event.getId());
+        initializeEmptyFieldIds(event);
         eventRepo.save(event);
         return goalServiceClient.getAllGoals(event.getUserUuid());
     }
