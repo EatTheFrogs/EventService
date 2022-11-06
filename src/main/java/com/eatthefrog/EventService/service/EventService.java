@@ -3,6 +3,7 @@ package com.eatthefrog.EventService.service;
 import com.eatthefrog.EventService.client.GoalServiceClient;
 import com.eatthefrog.EventService.controller.EventsController;
 import com.eatthefrog.EventService.model.event.Event;
+import com.eatthefrog.EventService.model.event.field.EventField;
 import com.eatthefrog.EventService.model.goal.Goal;
 import com.eatthefrog.EventService.repository.EventRepo;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Log
@@ -45,6 +48,16 @@ public class EventService {
         return goalServiceClient.getAllGoals(event.getUserUuid());
     }
 
+    public Collection<Goal> createFieldForEvent(EventField eventField, String eventId, String userUuid) {
+        eventField.setId(objectIdGenerator.generate().toString());
+        Event event = getEventById(eventId);
+        ArrayList<EventField> fields = new ArrayList<EventField>(event.getFields().stream().toList());
+        fields.add(eventField);
+        event.setFields(fields);
+        eventRepo.save(event);
+        return goalServiceClient.getAllGoals(userUuid);
+    }
+
     public Collection<Goal> updateEvent(Event event) {
         getEventById(event.getId());
         initializeEmptyFieldIds(event);
@@ -52,8 +65,36 @@ public class EventService {
         return goalServiceClient.getAllGoals(event.getUserUuid());
     }
 
+    public Collection<Goal> updateFieldForEvent(EventField eventField, String eventId, String userUuid) {
+        Event event = getEventById(eventId);
+        ArrayList<EventField> fields = new ArrayList<EventField>(event.getFields().stream().toList());
+        int index = -1;
+        for(int i=0; i<fields.size(); i++) {
+            if(StringUtils.equals(fields.get(i).getId(), eventField.getId())) {
+                index = i;
+                break;
+            }
+        }
+        if(index == -1) {
+            throw new EventsController.ResourceNotFoundException(
+                    String.format("Couldn't find EventField[%s] for Event[%s]", eventField.getId(), eventId));
+        }
+        fields.set(index, eventField);
+        event.setFields(fields);
+        eventRepo.save(event);
+        return goalServiceClient.getAllGoals(userUuid);
+    }
+
     public Collection<Goal> deleteEvent(String eventId, String userUuid) throws Exception {
         transactionHandlerService.runInTransaction(() -> deleteEventTransactional(eventId));
+        return goalServiceClient.getAllGoals(userUuid);
+    }
+
+    public Collection<Goal> deleteFieldFromEvent(String eventId, String fieldId, String userUuid) throws Exception {
+        Event event = getEventById(eventId);
+        List fields = event.getFields().stream().filter(field -> !StringUtils.equals(field.getId(), fieldId)).toList();
+        event.setFields(fields);
+        eventRepo.save(event);
         return goalServiceClient.getAllGoals(userUuid);
     }
 

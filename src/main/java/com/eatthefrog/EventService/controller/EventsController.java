@@ -1,6 +1,7 @@
 package com.eatthefrog.EventService.controller;
 
 import com.eatthefrog.EventService.model.event.Event;
+import com.eatthefrog.EventService.model.event.field.EventField;
 import com.eatthefrog.EventService.model.goal.Goal;
 import com.eatthefrog.EventService.service.EventService;
 import lombok.RequiredArgsConstructor;
@@ -63,6 +64,12 @@ public class EventsController {
         return eventService.createEvent(event);
     }
 
+    @PreAuthorize("@eventService.assertUserOwnsEvent(#jwt.getClaim('uid').toString(), #eventId)")
+    @PostMapping("/create/{eventId}/field")
+    public Collection<Goal> createFieldForEvent(@AuthenticationPrincipal Jwt jwt, @PathVariable String eventId, @RequestBody EventField eventField) throws Exception {
+        return eventService.createFieldForEvent(eventField, eventId, jwt.getClaim("uid").toString());
+    }
+
     @PreAuthorize("#event.getUserUuid() == authentication.token.claims['uid']")
     @PatchMapping("/update")
     public Collection<Goal> updateEvent(@RequestBody Event event) {
@@ -70,8 +77,20 @@ public class EventsController {
     }
 
     @PreAuthorize("@eventService.assertUserOwnsEvent(#jwt.getClaim('uid').toString(), #eventId)")
+    @PatchMapping("/update/{eventId}/field")
+    public Collection<Goal> updateFieldForEvent(@AuthenticationPrincipal Jwt jwt, @PathVariable String eventId, @RequestBody EventField eventField) {
+        return eventService.updateFieldForEvent(eventField, eventId, jwt.getClaim("uid").toString());
+    }
+
+    @PreAuthorize("@eventService.assertUserOwnsEvent(#jwt.getClaim('uid').toString(), #eventId)")
     @DeleteMapping("/delete/{eventId}")
     public Collection<Goal> deleteEvent(@AuthenticationPrincipal Jwt jwt, @PathVariable String eventId) throws Exception {
         return eventService.deleteEvent(eventId, jwt.getClaim("uid").toString());
+    }
+
+    @PreAuthorize("@eventService.assertUserOwnsEvent(#jwt.getClaim('uid').toString(), #eventId)")
+    @DeleteMapping("/delete/{eventId}/field/{fieldId}")
+    public Collection<Goal> deleteFieldFromEvent(@AuthenticationPrincipal Jwt jwt, @PathVariable String eventId, @PathVariable String fieldId) throws Exception {
+        return eventService.deleteFieldFromEvent(eventId, fieldId, jwt.getClaim("uid").toString());
     }
 }
