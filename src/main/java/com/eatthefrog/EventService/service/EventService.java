@@ -44,6 +44,7 @@ public class EventService {
     }
 
     public Collection<Goal> createEvent(Event event) throws Exception {
+
         transactionHandlerService.runInTransaction(() -> createEventTransactional(event));
         return goalServiceClient.getAllGoals(event.getUserUuid());
     }
@@ -112,7 +113,12 @@ public class EventService {
         }
         initializeEmptyFieldIds(event);
         Event savedEvent = eventRepo.save(event);
-        goalServiceClient.addEventToGoal(savedEvent);
+        try {
+            goalServiceClient.addEventToGoal(savedEvent);
+        } catch(Exception e) {
+            goalServiceClient.deleteEventFromGoal(event.getGoalId(), event.getId());
+            throw e;
+        }
     }
 
     public void deleteEventTransactional(String eventId) {
