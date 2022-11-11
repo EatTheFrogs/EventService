@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.eatthefrog</groupId>
 	<artifactId>EventService</artifactId>
-	<version>0.0.15-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<name>EventService</name>
 	<scm>
 		<connection>scm:git:${project.scm.url}</connection>
